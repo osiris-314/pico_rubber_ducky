@@ -62,6 +62,13 @@ def select_and_mount_disk():
             return selected_disk, mount_point
     return None, None
 
+def cp_folder_to(file_path, target_path, disconnect_state):
+    subprocess.run(f'cp -r {file_path} {target_path}', shell=True)
+    if disconnect_state == 0:
+        print(Fore.LIGHTGREEN_EX + 'Folder ' + Fore.LIGHTBLUE_EX + str(file_path) + Fore.LIGHTGREEN_EX + ' copied to ' + Fore.LIGHTBLUE_EX + str(target_path) + Fore.LIGHTGREEN_EX + ' ...' + Fore.RESET)
+    elif disconnect_state == 1:
+        print(Fore.LIGHTGREEN_EX + 'Folder ' + Fore.LIGHTBLUE_EX + str(file_path) + Fore.LIGHTGREEN_EX + ' copied to ' + Fore.LIGHTBLUE_EX + str(target_path) + Fore.YELLOW + ' (Pico will temporarily disconnect)' + Fore.LIGHTGREEN_EX + ' ...' + Fore.RESET)
+
 def cp_file_to(file_path, target_path, disconnect_state):
     subprocess.run(f'cp -r {file_path} {target_path}', shell=True)
     if file_path=='custom/flash_nuke.uf2' or file_path=='custom/adafruit-circuitpython-raspberry_pi_pico_w-en_US-9.1.2.uf2' or file_path=='custom/adafruit_hid' or file_path=='custom/adafruit_debouncer.mpy' or file_path=='custom/adafruit_ticks.mpy' or file_path=='custom/asyncio' or file_path=='custom/adafruit_wsgi' or file_path=='custom/boot.py' or file_path=='custom/duckyinpython.py' or file_path=='custom/code.py' or file_path=='custom/webapp.py' or file_path=='custom/wsgiserver.py':
@@ -192,7 +199,7 @@ if __name__ == "__main__":
             if selected_disk and mount_point:
                 
                 if check_dir_exist('custom/adafruit_hid'):
-                    cp_file_to('custom/adafruit_hid', f'{mount_point}/lib', 0)
+                    cp_folder_to('custom/adafruit_hid', f'{mount_point}/lib', 0)
                 else:
                     cp_file_to(f'{circuit_python_folder}/lib/adafruit_hid', f'{mount_point}/lib', 0)
 
@@ -207,13 +214,13 @@ if __name__ == "__main__":
                     cp_file_to(f'{circuit_python_folder}/lib/adafruit_ticks.mpy', f'{mount_point}/lib', 0)
 
                 if check_dir_exist('custom/asyncio'):
-                    cp_file_to('custom/asyncio', f'{mount_point}/lib', 0)
+                    cp_folder_to('custom/asyncio', f'{mount_point}/lib', 0)
                 else:
                     cp_file_to(f'{circuit_python_folder}/lib/asyncio', f'{mount_point}/lib', 0)
 
 
                 if check_dir_exist('custom/adafruit_wsgi'):
-                    cp_file_to('custom/adafruit_wsgi', f'{mount_point}/lib', 0)
+                    cp_folder_to('custom/adafruit_wsgi', f'{mount_point}/lib', 0)
                 else:
                     cp_file_to(f'{circuit_python_folder}/lib/adafruit_wsgi', f'{mount_point}/lib', 0)
 
