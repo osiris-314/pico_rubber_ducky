@@ -105,6 +105,7 @@ def get_file_names(folder_path):
     return file_names
 
 if __name__ == "__main__":
+    os.system('clear')
     selected_disk, mount_point = select_and_mount_disk()
     if selected_disk and mount_point:
 
