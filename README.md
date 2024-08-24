@@ -28,7 +28,7 @@ The maximum number is 11111111 = 256 = payload256.dd
 ![download_all_pico_multiple](https://github.com/user-attachments/assets/8a0cec18-1e14-4238-8d01-035e5d8b4c6d)
 
 # Circuit
-![pico_circuit](https://github.com/user-attachments/assets/3ca9337b-508a-4cbb-8c13-8cc416436774)
+![pico_circuit_final](https://github.com/user-attachments/assets/1c5e8cad-187f-4e42-9b2a-d40959b1c7d8)
 
 # -clean
 ## You can run both script with the '-clean' argument to delete all downloaded data at the end of the script.
