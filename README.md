@@ -10,11 +10,12 @@ python pico_rubber_ducky.py
 3) When the installation is completed, remove the pico from the pc, cause it will reboot and execute the payload we just uploaded.
 
 ## The current payload is launching fullscreen rick roll on youtube 
-## Upload your own payloads by changing the payload.dd file inside folder /payloads with yours, but make sure it is still called payload.dd
 ![download_all_pico_normal](https://github.com/user-attachments/assets/2312b81a-9191-4ad5-b6f7-8aebd8bb8950)
 
 ## If files already exist it will skip the download process
 ![already_downloaded](https://github.com/user-attachments/assets/b57d003f-85ba-434b-a923-0cf3ff47eb36)
+
+## Upload your own payloads by changing the payload.dd file inside folder /payloads with yours, but make sure it is still called payload.dd
 
 # Multiple Payloads
 ## Add the option to select between mutiple payloads on the go
