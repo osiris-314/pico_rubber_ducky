@@ -2,7 +2,7 @@
 ## Fully automated script to setup the pico and install a payload
 Automated script based on: [pico-ducky](https://github.com/dbisu/pico-ducky) 
 ## Instructions
-1) Insert the Pico to the pc while holding the BOOTSEL button
+1) Insert the Pico to the pc while holding the BOOTSEL button, then release the button.
 2) After 10 seconds run the script
 ```
 python pico_rubber_ducky.py
