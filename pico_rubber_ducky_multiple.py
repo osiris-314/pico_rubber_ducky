@@ -116,6 +116,7 @@ def get_file_names(folder_path):
 
 
 if __name__ == "__main__":
+    os.system('clear')
     payload_names = get_file_names('payloads')
     cutom_files_names = get_file_names('custom')
     selected_disk, mount_point = select_and_mount_disk()
