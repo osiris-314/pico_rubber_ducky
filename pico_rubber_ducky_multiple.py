@@ -4,6 +4,7 @@ import time
 from colorama import Fore
 import os.path
 import argparse
+import re
 
 parser = argparse.ArgumentParser(description='Process some arguments.')
 parser.add_argument('-clean', action='store_true', help='Delete all downloaded data at the end')
@@ -84,13 +85,17 @@ def cp_file_to(file_path, target_path, disconnect_state):
 
 
 def cp_payload_to(file_path, target_path, disconnect_state):
-    subprocess.run(f'cp -r {file_path} {target_path}', shell=True)
-    if disconnect_state == 0:
-        payload_name = file_path.replace('payloads/','')
-        print(Fore.LIGHTGREEN_EX + 'Payload ' + Fore.LIGHTBLUE_EX + str(payload_name) + Fore.LIGHTGREEN_EX + ' copied to ' + Fore.LIGHTBLUE_EX + str(target_path) + Fore.LIGHTGREEN_EX + ' ...' + Fore.RESET)
-    elif disconnect_state == 1:
-        payload_name = file_path.replace('payloads/','')
-        print(Fore.LIGHTGREEN_EX + 'Payload ' + Fore.LIGHTBLUE_EX + str(payload_name) + Fore.LIGHTGREEN_EX + ' copied to ' + Fore.LIGHTBLUE_EX + str(target_path) + Fore.YELLOW + ' (Pico will temporarily disconnect)' + Fore.LIGHTGREEN_EX + ' ...' + Fore.RESET)
+    try:
+        subprocess.run(f'cp -r {file_path} {target_path}', shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if disconnect_state == 0:
+            payload_name = file_path.replace('payloads/','')
+            print(Fore.LIGHTGREEN_EX + 'Payload ' + Fore.LIGHTBLUE_EX + str(payload_name) + Fore.LIGHTGREEN_EX + ' copied to ' + Fore.LIGHTBLUE_EX + str(target_path) + Fore.LIGHTGREEN_EX + ' ...' + Fore.RESET)
+        elif disconnect_state == 1:
+            payload_name = file_path.replace('payloads/','')
+            print(Fore.LIGHTGREEN_EX + 'Payload ' + Fore.LIGHTBLUE_EX + str(payload_name) + Fore.LIGHTGREEN_EX + ' copied to ' + Fore.LIGHTBLUE_EX + str(target_path) + Fore.YELLOW + ' (Pico will temporarily disconnect)' + Fore.LIGHTGREEN_EX + ' ...' + Fore.RESET)
+    except subprocess.CalledProcessError as e:
+        replaced_file_path = file_path.replace('payloads/','')
+        failed_payloads.append(replaced_file_path)
 
 
 def check_file_exist(path):
@@ -114,10 +119,19 @@ def get_file_names(folder_path):
 
     return file_names
 
+def natural_key(file_name):
+    # Handle the special case for 'payload.dd' with no number
+    if file_name == 'payload.dd':
+        return (0, 0)  # Sort this one first
+    # Extract the numeric part of the filename or returns 0 if there's no number
+    match = re.search(r'(\d+)', file_name)
+    return (1, int(match.group(0)) if match else 0)
+
 
 if __name__ == "__main__":
     os.system('clear')
     payload_names = get_file_names('payloads')
+    sorted_file_names = sorted(payload_names, key=natural_key)
     cutom_files_names = get_file_names('custom')
     selected_disk, mount_point = select_and_mount_disk()
     if selected_disk and mount_point:
@@ -182,6 +196,7 @@ if __name__ == "__main__":
             time.sleep(20)
         else:
             cp_file_to('flash_nuke.uf2', mount_point, 1)  # delete old data
+            time.sleep(20)
 
         # Re-select and re-mount disk after sleep
         selected_disk, mount_point = select_and_mount_disk()
@@ -251,8 +266,14 @@ if __name__ == "__main__":
                     cp_file_to(f'{pico_ducky_folder}/wsgiserver.py', mount_point, 0)
                 
                 print('\n')
-                for payload in payload_names:
+                failed_payloads = []
+                
+                for payload in sorted_file_names:
                     cp_payload_to('payloads/'+str(payload), mount_point, 0)
+                print('\n')
+                print(Fore.LIGHTRED_EX + 'No space on device for payloads:' + Fore.RESET)
+                for payload in failed_payloads:
+                    print(Fore.YELLOW + str(payload) + Fore.RESET)
 
                 subprocess.run(f'sudo umount {mount_point}', shell=True)
 
