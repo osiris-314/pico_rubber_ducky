@@ -28,6 +28,12 @@ The maximum number is 11111111 = 256 = payload256.dd
 #
 ![download_all_pico_multiple](https://github.com/user-attachments/assets/8a0cec18-1e14-4238-8d01-035e5d8b4c6d)
 
+## If there is no more storage space for some payloads it will tell you which payloads didnt make it to the upload process
+How many payloads the Raspberry PI Pico can hold, depends on the size of our payloads. As the Raspberry PI Pico has only 2MB of storage.
+
+![no_space_for_payloads](https://github.com/user-attachments/assets/778ebf4e-9642-4d19-9195-65b57a706ec3)
+
+
 # Circuit
 ![pico_circuit_final](https://github.com/user-attachments/assets/1c5e8cad-187f-4e42-9b2a-d40959b1c7d8)
 
